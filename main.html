@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ECO: Missão Saneamento</title>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="css/hud.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ========== TELA DE MENU ========== -->
+  <section id="screen-menu" class="screen active">
+    <div class="menu-bg">
+      <div class="menu-particle p1"></div>
+      <div class="menu-particle p2"></div>
+      <div class="menu-particle p3"></div>
+      <div class="menu-particle p4"></div>
+      <div class="menu-particle p5"></div>
+    </div>
+    <div class="menu-box">
+      <h1 class="game-title">ECO<span>:</span> MISSÃO SANEAMENTO</h1>
+      <p class="game-subtitle">Águas Claras precisa de você</p>
+      <div class="menu-buttons">
+        <button id="btn-jogar" class="menu-btn menu-btn-primary">JOGAR</button>
+        <button id="btn-continuar" class="menu-btn">CONTINUAR</button>
+        <button id="btn-como-jogar" class="menu-btn">COMO JOGAR</button>
+      </div>
+      <p class="menu-footer">v0.1 · Primeira fase jogável</p>
+    </div>
+  </section>
+
+  <!-- ========== TELA COMO JOGAR ========== -->
+  <section id="screen-help" class="screen">
+    <div class="panel">
+      <h2>COMO JOGAR</h2>
+      <div class="help-grid">
+        <div class="help-col">
+          <h3>Teclado</h3>
+          <ul>
+            <li><b>WASD / Setas</b> — Mover</li>
+            <li><b>Espaço</b> — Atacar</li>
+            <li><b>Shift</b> — Dash (esquiva)</li>
+            <li><b>Q</b> — Limpa Área (especial)</li>
+            <li><b>E</b> — Interagir</li>
+            <li><b>ESC</b> — Menu / Pausar</li>
+          </ul>
+        </div>
+        <div class="help-col">
+          <h3>Celular</h3>
+          <ul>
+            <li><b>Analógico</b> — Mover</li>
+            <li><b>Botão A</b> — Atacar</li>
+            <li><b>Botão D</b> — Dash</li>
+            <li><b>Botão E</b> — Especial</li>
+            <li><b>Botão ✋</b> — Interagir</li>
+          </ul>
+        </div>
+      </div>
+      <p class="help-tip">Recolha o lixo para abrir caminho, ajude os moradores e derrote o chefe para concluir a fase.</p>
+      <button id="btn-help-back" class="menu-btn menu-btn-primary">VOLTAR</button>
+    </div>
+  </section>
+
+  <!-- ========== TELA DE JOGO ========== -->
+  <section id="screen-game" class="screen">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-top-left">
+        <div class="hud-name">ECO</div>
+        <div id="hud-hearts" class="hud-hearts"></div>
+      </div>
+      <div class="hud-top-right">
+        <div class="hud-points">ECO PONTOS: <span id="hud-points-value">0</span></div>
+        <div class="hud-phase" id="hud-phase">FASE: BAIRRO ESQUECIDO</div>
+      </div>
+      <div class="hud-bottom-right">
+        <div class="hud-ability" id="ability-attack"><span class="key">ESPAÇO</span><span class="lbl">ATAQUE</span></div>
+        <div class="hud-ability" id="ability-dash"><span class="key">SHIFT</span><span class="lbl">DASH</span><div class="cd-overlay"></div></div>
+        <div class="hud-ability" id="ability-special"><span class="key">Q</span><span class="lbl">ESPECIAL</span><div class="cd-overlay"></div></div>
+      </div>
+      <div class="hud-objective" id="hud-objective"></div>
+      <button id="btn-pause" class="icon-btn">☰</button>
+    </div>
+
+    <!-- Boss HP bar -->
+    <div id="boss-bar" class="boss-bar hidden">
+      <div class="boss-name" id="boss-name">RATO REI</div>
+      <div class="boss-hp-track"><div class="boss-hp-fill" id="boss-hp-fill"></div></div>
+    </div>
+
+    <!-- Dialogue box -->
+    <div id="dialogue-box" class="dialogue-box hidden">
+      <div class="dialogue-name" id="dialogue-name"></div>
+      <div class="dialogue-text" id="dialogue-text"></div>
+      <div class="dialogue-choices" id="dialogue-choices"></div>
+      <div class="dialogue-continue" id="dialogue-continue">▼ toque para continuar</div>
+    </div>
+
+    <!-- Interact prompt -->
+    <div id="interact-prompt" class="interact-prompt hidden">Pressione <b>E</b> para interagir</div>
+
+    <!-- Puzzle overlay -->
+    <div id="puzzle-overlay" class="puzzle-overlay hidden">
+      <div class="puzzle-panel">
+        <h2 id="puzzle-title">DESENTUPIR O BUEIRO</h2>
+        <p id="puzzle-desc">Toque nos objetos na ordem certa para desobstruir a passagem.</p>
+        <div id="puzzle-area" class="puzzle-area"></div>
+        <div id="puzzle-feedback" class="puzzle-feedback"></div>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div id="mobile-controls" class="mobile-controls">
+      <div id="joystick-zone" class="joystick-zone">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-stick" class="joystick-stick"></div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button id="btn-interact" class="action-btn btn-interact">✋</button>
+        <button id="btn-special" class="action-btn btn-special">Q</button>
+        <button id="btn-dash" class="action-btn btn-dash">D</button>
+        <button id="btn-attack" class="action-btn btn-attack">A</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TELA DE PAUSA ========== -->
+  <section id="screen-pause" class="screen">
+    <div class="panel">
+      <h2>PAUSADO</h2>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="menu-btn menu-btn-primary">CONTINUAR JOGANDO</button>
+        <button id="btn-options" class="menu-btn">OPÇÕES</button>
+        <button id="btn-quit-menu" class="menu-btn">SAIR PARA O MENU</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TELA DE OPÇÕES ========== -->
+  <section id="screen-options" class="screen">
+    <div class="panel">
+      <h2>OPÇÕES</h2>
+      <div class="options-list">
+        <label class="option-row">
+          <span>Volume</span>
+          <input type="range" id="opt-volume" min="0" max="100" value="70">
+        </label>
+        <label class="option-row">
+          <span>Reduzir efeitos visuais</span>
+          <input type="checkbox" id="opt-reduce-fx">
+        </label>
+        <label class="option-row">
+          <span>Tamanho da fonte</span>
+          <select id="opt-font-size">
+            <option value="normal">Normal</option>
+            <option value="grande">Grande</option>
+          </select>
+        </label>
+      </div>
+      <button id="btn-options-back" class="menu-btn menu-btn-primary">VOLTAR</button>
+    </div>
+  </section>
+
+  <!-- ========== GAME OVER ========== -->
+  <section id="screen-gameover" class="screen">
+    <div class="panel panel-dark">
+      <h2 class="gameover-title">VOCÊ FOI DERROTADO</h2>
+      <p class="gameover-points">ECO PONTOS: <span id="gameover-points">0</span></p>
+      <div class="menu-buttons">
+        <button id="btn-retry" class="menu-btn menu-btn-primary">TENTAR NOVAMENTE</button>
+        <button id="btn-gameover-menu" class="menu-btn">MENU</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FASE CONCLUÍDA ========== -->
+  <section id="screen-phasecomplete" class="screen">
+    <div class="panel panel-success">
+      <h2>FASE CONCLUÍDA!</h2>
+      <div class="stats-list">
+        <div class="stat-row">ECO PONTOS <span id="stat-points">+0</span></div>
+        <div class="stat-row">RESÍDUOS REMOVIDOS <span id="stat-trash">0</span></div>
+        <div class="stat-row">PROBLEMAS RESOLVIDOS <span id="stat-problems">0</span></div>
+      </div>
+      <div class="learned-box">
+        <div class="learned-label">VOCÊ APRENDEU</div>
+        <p id="learned-text"></p>
+      </div>
+      <button id="btn-phasecomplete-continue" class="menu-btn menu-btn-primary">CONTINUAR</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/save.js"></script>
+<script src="js/score.js"></script>
+<script src="js/map.js"></script>
+<script src="js/dialogue.js"></script>
+<script src="js/npc.js"></script>
+<script src="js/puzzle.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/player.js"></script>
+<script src="js/enemy.js"></script>
+<script src="js/boss.js"></script>
+<script src="js/level.js"></script>
+<script src="js/mobileControls.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

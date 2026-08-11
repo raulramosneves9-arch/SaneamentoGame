@@ -1,0 +1,98 @@
+#screen-menu {
+  background: radial-gradient(ellipse at 50% 20%, #16332A 0%, var(--bg-deep) 70%);
+  position: relative;
+}
+
+.menu-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.menu-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--toxic);
+  opacity: 0.35;
+  filter: blur(1px);
+  animation: floatUp 9s linear infinite;
+}
+.p1 { width: 6px; height: 6px; left: 10%; animation-duration: 8s; }
+.p2 { width: 10px; height: 10px; left: 28%; animation-duration: 11s; animation-delay: 1s; }
+.p3 { width: 4px; height: 4px; left: 52%; animation-duration: 7s; animation-delay: 2s; }
+.p4 { width: 8px; height: 8px; left: 74%; animation-duration: 10s; animation-delay: 0.5s; }
+.p5 { width: 5px; height: 5px; left: 88%; animation-duration: 9s; animation-delay: 3s; }
+
+@keyframes floatUp {
+  from { transform: translateY(110vh) scale(1); opacity: 0; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.25; }
+  to { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+}
+
+.menu-box {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  padding: 20px;
+}
+
+.game-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 5vw, 34px);
+  color: var(--toxic);
+  text-shadow: 0 0 18px rgba(140,255,107,0.5), 0 4px 0 #1a3a2a;
+  line-height: 1.6;
+  letter-spacing: 1px;
+}
+.game-title span { color: var(--warn); }
+
+.game-subtitle {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin: 14px 0 34px;
+  letter-spacing: 0.5px;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(280px, 80vw);
+  margin: 0 auto;
+}
+
+.menu-btn {
+  font-family: var(--font-display);
+  font-size: 11px;
+  padding: 16px 10px;
+  border-radius: 8px;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  transition: transform 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+.menu-btn:hover, .menu-btn:active {
+  transform: translateY(-2px);
+  border-color: var(--toxic);
+  color: var(--text-main);
+}
+
+.menu-btn-primary {
+  background: linear-gradient(180deg, #9CFF7A, #63C948);
+  color: #0B1A16;
+  border: none;
+  box-shadow: 0 6px 0 #3E7A2F, 0 10px 20px rgba(140,255,107,0.25);
+}
+.menu-btn-primary:hover, .menu-btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 0 #3E7A2F, 0 8px 16px rgba(140,255,107,0.25);
+}
+
+.menu-footer {
+  margin-top: 30px;
+  font-size: 11px;
+  color: var(--line);
+}

@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+:root {
+  /* ---- ECO palette: toxic-industrial with a bioluminescent signature ---- */
+  --bg-deep:      #0B1A16;
+  --bg-panel:     #12241F;
+  --bg-panel-2:   #1A342C;
+  --line:         #274A3D;
+  --toxic:        #8CFF6B;   /* signature acid-green: ECO's energy */
+  --toxic-dim:    #4E9B3E;
+  --warn:         #FFB020;   /* hazard amber */
+  --danger:       #FF5C5C;
+  --water:        #2FB6C9;
+  --text-main:    #EAF5EE;
+  --text-dim:     #9FB8AC;
+  --font-display: 'Press Start 2P', monospace;
+  --font-body:    'Space Grotesk', -apple-system, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.screen.active {
+  display: flex;
+}
+
+#screen-game.active {
+  display: block;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #0d211b;
+  image-rendering: pixelated;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 32px 28px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(140,255,107,0.05) inset;
+}
+
+.panel h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--toxic);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.panel-dark { border-color: var(--danger); }
+.panel-dark h2 { color: var(--danger); }
+.panel-success { border-color: var(--toxic); }
+
+.hidden { display: none !important; }
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(11,26,22,0.75);
+  border: 1px solid var(--line);
+  color: var(--text-main);
+  font-size: 18px;
+}
+
+/* ---- Help screen ---- */
+.help-grid {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.help-col h3 {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--water);
+  margin-bottom: 10px;
+}
+.help-col li {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text-dim);
+}
+.help-col li b { color: var(--text-main); }
+.help-tip {
+  font-size: 13px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-bottom: 20px;
+}
+
+/* ---- Options ---- */
+.options-list { margin-bottom: 20px; }
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.option-row select {
+  background: var(--bg-panel-2);
+  color: var(--text-main);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+/* ---- Game Over ---- */
+.gameover-title {
+  font-family: var(--font-display);
+  color: var(--danger) !important;
+}
+.gameover-points {
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: 22px;
+}
+
+/* ---- Phase complete ---- */
+.stats-list { margin-bottom: 18px; }
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.stat-row span { color: var(--toxic); font-weight: 700; }
+.learned-box {
+  background: var(--bg-panel-2);
+  border-left: 3px solid var(--toxic);
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 22px;
+}
+.learned-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: var(--toxic);
+  margin-bottom: 8px;
+}
+#learned-text { font-size: 13px; line-height: 1.5; color: var(--text-main); }
